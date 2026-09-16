@@ -49,7 +49,7 @@ static void serial_init(void)
 {
 	UART_Config_t uart =
 	{
-		.pUARTx				= UART2,
+		.pUARTx				= USART2,
 		.UART_Mode			= UART_MODE_TXRX,
 		.UART_Baud			= UART_STD_BAUD_115200,
 		.UART_NoOfStopBits	= UART_STOPBITS_1,
@@ -59,12 +59,12 @@ static void serial_init(void)
 	};
 
 	UART_Init(&uart);
-	UART_PeripheralControl(UART2, ENABLE);
+	UART_PeripheralControl(USART2, ENABLE);
 }
 
 static void serial_print(const char *msg)
 {
-	UART_Write(UART2, (const uint8_t *)msg, strlen(msg));
+	UART_Write(USART2, (const uint8_t *)msg, strlen(msg));
 }
 
 int main(void)

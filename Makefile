@@ -13,7 +13,7 @@ BAUD ?= 115200
 LINKER= -T drivers/Device/linkers/STM32F411.ld
 MAP_FILE= -Wl,-Map=$(BUILD_DIR)/$(TARGET).map
 
-CFLAGS= -c $(MACH) -mthumb $(FLOAT) -std=gnu99 -Wall -O0 -g3 \
+CFLAGS= -c $(MACH) -mthumb $(FLOAT) -DSTM32F411xE -std=gnu99 -Wall -O0 -g3 \
 		--specs=nano.specs -ffunction-sections -fdata-sections
 
 LDFLAGS = $(MACH) -mthumb $(FLOAT) --specs=nosys.specs $(LINKER) $(MAP_FILE) -g3 \
@@ -28,6 +28,7 @@ OBJCOPY=arm-none-eabi-objcopy
 
 INCLUDES+= -I app/Inc
 INCLUDES+= -I drivers/Inc
+INCLUDES+= -I drivers/Device/cmsis
 
 
 ############################################
@@ -37,6 +38,7 @@ INCLUDES+= -I drivers/Inc
 OBJS		+= $(BUILD_DIR)/$(APP).o
 OBJS		+= $(BUILD_DIR)/startup.o
 OBJS		+= $(BUILD_DIR)/syscalls.o
+OBJS		+= $(BUILD_DIR)/system_stm32f4xx.o
 
 DRIVERS		+= $(BUILD_DIR)/driver_clock.o
 DRIVERS		+= $(BUILD_DIR)/driver_systick.o
