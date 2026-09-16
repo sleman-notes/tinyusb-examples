@@ -1,7 +1,7 @@
+#include <stddef.h>
 #include "driver_gpio.h"
 
-
-void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
+void GPIO_PeriClockControl(GPIO_TypeDef *pGPIOx, uint8_t EnorDi)
 {
 	if(EnorDi == ENABLE)
 	{
@@ -106,7 +106,7 @@ uint8_t GPIO_Init(GPIO_PinConfig_t *pGPIOConfig)
     return GPIO_OK;
 }
 
-void GPIO_DeInit(GPIO_RegDef_t *pGPIOx)
+void GPIO_DeInit(GPIO_TypeDef *pGPIOx)
 {
 	if		(pGPIOx == GPIOA) GPIOA_REG_RESET();
 	else if	(pGPIOx == GPIOB) GPIOB_REG_RESET();
@@ -131,7 +131,7 @@ void GPIO_Init_table(const GPIO_PinConfig_t *pGPIOConfig, uint32_t Len)
 }
 
 
-uint8_t  GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
+uint8_t  GPIO_ReadFromInputPin(GPIO_TypeDef *pGPIOx, uint8_t PinNumber)
 {
 	uint8_t value;
 	value = (uint8_t)((pGPIOx->IDR >> PinNumber) & 0x01);
@@ -140,7 +140,7 @@ uint8_t  GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
 }
 
 
-uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx)
+uint16_t GPIO_ReadFromInputPort(GPIO_TypeDef *pGPIOx)
 {
 	uint16_t value;
 	value = (uint16_t)(pGPIOx->IDR);
@@ -148,7 +148,7 @@ uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx)
 	return value;
 }
 
-void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber, uint8_t Value)
+void GPIO_WriteToOutputPin(GPIO_TypeDef *pGPIOx, uint8_t PinNumber, uint8_t Value)
 {
 	if(Value == GPIO_PIN_SET)
 	{
@@ -159,30 +159,30 @@ void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber, uint8_t Val
 	}
 }
 
-void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber)
+void GPIO_ToggleOutputPin(GPIO_TypeDef *pGPIOx, uint8_t PinNumber)
 {
 	pGPIOx->ODR ^= (1 << PinNumber);
 }
 
-void GPIO_SetPinMode(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t mode)
+void GPIO_SetPinMode(GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t mode)
 {
     pGPIOx->MODER &= ~(0x3u << (2u * pinNumber));
     pGPIOx->MODER |=  ((mode & 0x3u) << (2u * pinNumber));
 }
 
-void GPIO_SetPinPull(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t pull)
+void GPIO_SetPinPull(GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t pull)
 {
     pGPIOx->PUPDR &= ~(0x3u << (2u * pinNumber));
     pGPIOx->PUPDR |=  ((pull & 0x3u) << (2u * pinNumber));
 }
 
-void GPIO_SetPinSpeed(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t speed)
+void GPIO_SetPinSpeed(GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t speed)
 {
     pGPIOx->OSPEEDR &= ~(0x3u << (2u * pinNumber));
     pGPIOx->OSPEEDR |=  ((speed & 0x3u) << (2u * pinNumber));
 }
 
-void GPIO_SetPinOutputType(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t otype)
+void GPIO_SetPinOutputType(GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t otype)
 {
     pGPIOx->OTYPER &= ~(0x1u << pinNumber);
     pGPIOx->OTYPER |=  ((otype & 0x1u) << pinNumber);

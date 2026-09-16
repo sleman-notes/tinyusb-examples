@@ -13,20 +13,20 @@ void systick_init(uint32_t tick_hz)
     uint32_t count_value = clock_get()/tick_hz;
 
     // clear and load the reload value (24-bit counter)
-    SYSTICK->LOAD = (count_value - 1) & 0x00FFFFFFU;
+    SysTick->LOAD = (count_value - 1) & 0x00FFFFFFU;
 
     // clear current value so first period is accurate
-    SYSTICK->VAL = 0;
+    SysTick->VAL = 0;
 
     // enable: processor clock source + interrupt + counter
-    SYSTICK->CTRL = SYSTICK_CTRL_CLKSRC | SYSTICK_CTRL_TICKINT | SYSTICK_CTRL_ENABLE;
+    SysTick->CTRL = SYSTICK_CTRL_CLKSRC | SYSTICK_CTRL_TICKINT | SYSTICK_CTRL_ENABLE;
 }
 
 uint64_t ticks_get(void)
 {
-    INTERRUPT_DISABLE();
+    __disable_irq();
     uint64_t snapshot = g_ticks;
-    INTERRUPT_ENABLE();
+    __enable_irq();
 
     return snapshot;
 }
@@ -51,10 +51,10 @@ void systick_counter(uint8_t EnorDi)
 {
     if(EnorDi == ENABLE)
     {
-        SYSTICK->CTRL = (SYSTICK_CTRL_ENABLE | SYSTICK_CTRL_CLKSRC);
+        SysTick->CTRL = (SYSTICK_CTRL_ENABLE | SYSTICK_CTRL_CLKSRC);
     }else
     {
-        SYSTICK->CTRL &= ~(SYSTICK_CTRL_ENABLE | SYSTICK_CTRL_CLKSRC);
+        SysTick->CTRL &= ~(SYSTICK_CTRL_ENABLE | SYSTICK_CTRL_CLKSRC);
     }
 }
 
@@ -62,10 +62,10 @@ void systick_interrupt(uint8_t EnorDi)
 {
     if(EnorDi == ENABLE)
     {
-        SYSTICK->CTRL |= SYSTICK_CTRL_TICKINT;
+        SysTick->CTRL |= SYSTICK_CTRL_TICKINT;
     }else
     {
-        SYSTICK->CTRL &= ~SYSTICK_CTRL_TICKINT;
+        SysTick->CTRL &= ~SYSTICK_CTRL_TICKINT;
     }
 }
 
