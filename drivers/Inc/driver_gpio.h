@@ -1,7 +1,46 @@
 #ifndef INC_GPIO_H_
 #define INC_GPIO_H_
 
-#include "stm32f411xx.h"
+#include "stm32f4xx.h"
+
+/*
+ * Clock enable/disable and reset macros for GPIOx
+ */
+
+#define GPIOA_PCLK_EN()		(RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN)
+#define GPIOB_PCLK_EN()		(RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN)
+#define GPIOC_PCLK_EN()		(RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN)
+#define GPIOD_PCLK_EN()		(RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN)
+#define GPIOE_PCLK_EN()		(RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN)
+#define GPIOH_PCLK_EN()		(RCC->AHB1ENR |= RCC_AHB1ENR_GPIOHEN)
+
+#define GPIOA_PCLK_DI()		(RCC->AHB1ENR &= ~RCC_AHB1ENR_GPIOAEN)
+#define GPIOB_PCLK_DI()		(RCC->AHB1ENR &= ~RCC_AHB1ENR_GPIOBEN)
+#define GPIOC_PCLK_DI()		(RCC->AHB1ENR &= ~RCC_AHB1ENR_GPIOCEN)
+#define GPIOD_PCLK_DI()		(RCC->AHB1ENR &= ~RCC_AHB1ENR_GPIODEN)
+#define GPIOE_PCLK_DI()		(RCC->AHB1ENR &= ~RCC_AHB1ENR_GPIOEEN)
+#define GPIOH_PCLK_DI()		(RCC->AHB1ENR &= ~RCC_AHB1ENR_GPIOHEN)
+
+#define GPIOA_REG_RESET()	do{RCC->AHB1RSTR |= RCC_AHB1RSTR_GPIOARST; RCC->AHB1RSTR &= ~RCC_AHB1RSTR_GPIOARST;}while(0)
+#define GPIOB_REG_RESET()	do{RCC->AHB1RSTR |= RCC_AHB1RSTR_GPIOBRST; RCC->AHB1RSTR &= ~RCC_AHB1RSTR_GPIOBRST;}while(0)
+#define GPIOC_REG_RESET()	do{RCC->AHB1RSTR |= RCC_AHB1RSTR_GPIOCRST; RCC->AHB1RSTR &= ~RCC_AHB1RSTR_GPIOCRST;}while(0)
+#define GPIOD_REG_RESET()	do{RCC->AHB1RSTR |= RCC_AHB1RSTR_GPIODRST; RCC->AHB1RSTR &= ~RCC_AHB1RSTR_GPIODRST;}while(0)
+#define GPIOE_REG_RESET()	do{RCC->AHB1RSTR |= RCC_AHB1RSTR_GPIOERST; RCC->AHB1RSTR &= ~RCC_AHB1RSTR_GPIOERST;}while(0)
+#define GPIOH_REG_RESET()	do{RCC->AHB1RSTR |= RCC_AHB1RSTR_GPIOHRST; RCC->AHB1RSTR &= ~RCC_AHB1RSTR_GPIOHRST;}while(0)
+
+/* SYSCFG is needed to route the EXTI lines to a port */
+#define SYSCFG_PCLK_EN()	(RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN)
+
+/*
+ *  Macro to give the code of a port
+ */
+
+#define GPIO_BASEADDR_TO_CODE(x)	  ( (x == GPIOA) ? 0 :\
+										(x == GPIOB) ? 1 :\
+										(x == GPIOC) ? 2 :\
+										(x == GPIOD) ? 3 :\
+										(x == GPIOE) ? 4 :\
+										(x == GPIOH) ? 7 : 0 )
 
 /*
  * This is a configuration structure for a GPIO pin
@@ -9,7 +48,7 @@
 
 typedef struct
 {
-	GPIO_RegDef_t *pGPIOx;      /* hold the base address of the GPIO port which the pin belongs */
+	GPIO_TypeDef *pGPIOx;      /* hold the base address of the GPIO port which the pin belongs */
 	uint8_t GPIO_PinNumber; 	/*!< possible modes from @GPIO_PIN_NUMBER >*/
 	uint8_t GPIO_PinMode;		/*!< possible modes from @GPIO_PIN_MODES >*/
 	uint8_t	GPIO_PinSpeed; 		/*!< possible modes from @GPIO_PIN_SPEED >*/
@@ -110,6 +149,9 @@ typedef struct
 
 #define GPIO_OK                     0
 
+#define GPIO_PIN_SET                1
+#define GPIO_PIN_RESET              0
+
 
 /********************************************************************************************
  * 								APIs supported by this driver
@@ -119,30 +161,30 @@ typedef struct
 /*
  *  Peripheral clock setup
  */
-void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi);
+void GPIO_PeriClockControl(GPIO_TypeDef *pGPIOx, uint8_t EnorDi);
 
 /*
  * Init and De-init
  */
 uint8_t GPIO_Init(GPIO_PinConfig_t *pGPIOConfig);
 void GPIO_Init_table(const GPIO_PinConfig_t *pGPIOConfig, uint32_t Len);
-void GPIO_DeInit(GPIO_RegDef_t *pGPIOx);
+void GPIO_DeInit(GPIO_TypeDef *pGPIOx);
 
 /*
  * Data read and write
  */
-uint8_t  GPIO_ReadFromInputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber);
-uint16_t GPIO_ReadFromInputPort(GPIO_RegDef_t *pGPIOx);
-void GPIO_WriteToOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber, uint8_t Value);
-void GPIO_ToggleOutputPin(GPIO_RegDef_t *pGPIOx, uint8_t PinNumber);
+uint8_t  GPIO_ReadFromInputPin(GPIO_TypeDef *pGPIOx, uint8_t PinNumber);
+uint16_t GPIO_ReadFromInputPort(GPIO_TypeDef *pGPIOx);
+void GPIO_WriteToOutputPin(GPIO_TypeDef *pGPIOx, uint8_t PinNumber, uint8_t Value);
+void GPIO_ToggleOutputPin(GPIO_TypeDef *pGPIOx, uint8_t PinNumber);
 
 /*
  * Runtime configurations
  */
-void GPIO_SetPinMode      (GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t mode);
-void GPIO_SetPinPull      (GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t pull);
-void GPIO_SetPinSpeed     (GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t speed);
-void GPIO_SetPinOutputType(GPIO_RegDef_t *pGPIOx, uint8_t pinNumber, uint8_t otype);
+void GPIO_SetPinMode      (GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t mode);
+void GPIO_SetPinPull      (GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t pull);
+void GPIO_SetPinSpeed     (GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t speed);
+void GPIO_SetPinOutputType(GPIO_TypeDef *pGPIOx, uint8_t pinNumber, uint8_t otype);
 
 
 

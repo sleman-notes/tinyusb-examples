@@ -1,11 +1,28 @@
 #ifndef INC_DRIVER_UART_H_
 #define INC_DRIVER_UART_H_
 
-#include "stm32f411xx.h"
+#include "stm32f4xx.h"
+#include <stdbool.h>
+
+/*
+ * Clock enable/disable and reset macros for USARTx
+ */
+
+#define UART1_PCLK_EN()		(RCC->APB2ENR |= RCC_APB2ENR_USART1EN)
+#define UART2_PCLK_EN()		(RCC->APB1ENR |= RCC_APB1ENR_USART2EN)
+#define UART6_PCLK_EN()		(RCC->APB2ENR |= RCC_APB2ENR_USART6EN)
+
+#define UART1_PCLK_DI()		(RCC->APB2ENR &= ~RCC_APB2ENR_USART1EN)
+#define UART2_PCLK_DI()		(RCC->APB1ENR &= ~RCC_APB1ENR_USART2EN)
+#define UART6_PCLK_DI()		(RCC->APB2ENR &= ~RCC_APB2ENR_USART6EN)
+
+#define UART1_REG_RESET()	do{RCC->APB2RSTR |= RCC_APB2RSTR_USART1RST; RCC->APB2RSTR &= ~RCC_APB2RSTR_USART1RST;}while(0)
+#define UART2_REG_RESET()	do{RCC->APB1RSTR |= RCC_APB1RSTR_USART2RST; RCC->APB1RSTR &= ~RCC_APB1RSTR_USART2RST;}while(0)
+#define UART6_REG_RESET()	do{RCC->APB2RSTR |= RCC_APB2RSTR_USART6RST; RCC->APB2RSTR &= ~RCC_APB2RSTR_USART6RST;}while(0)
 
 typedef struct
 {
-    UART_RegDef_t *pUARTx;
+    USART_TypeDef *pUARTx;
 	uint8_t UART_Mode;
 	uint32_t UART_Baud;
 	uint8_t UART_NoOfStopBits;
@@ -142,21 +159,21 @@ typedef enum
  ********************************************************************************************/
 
 /* Peripheral clock */
-void UART_PeriClockControl(UART_RegDef_t *pUARTx, uint8_t EnorDi);
+void UART_PeriClockControl(USART_TypeDef *pUARTx, uint8_t EnorDi);
 
 /* Init and De-init */
 void UART_Init(UART_Config_t *pUARTConfig);
-void UART_DeInit(UART_RegDef_t *pUARTx);
+void UART_DeInit(USART_TypeDef *pUARTx);
 
 /* Data write and read */
-UART_Error_e UART_Write(UART_RegDef_t *pUARTx, const uint8_t *pTxBuffer, uint32_t Len);
-UART_Error_e UART_WriteByte(UART_RegDef_t *pUARTx, uint8_t data);
-uint8_t      UART_ReadByte(UART_RegDef_t *pUARTx);
+UART_Error_e UART_Write(USART_TypeDef *pUARTx, const uint8_t *pTxBuffer, uint32_t Len);
+UART_Error_e UART_WriteByte(USART_TypeDef *pUARTx, uint8_t data);
+uint8_t      UART_ReadByte(USART_TypeDef *pUARTx);
 
 /* Status and control */
-UART_Error_e UART_WaitForFlag(UART_RegDef_t *pUARTx, uint32_t flag, bool status, uint32_t timeoutMs);
-bool         UART_GetFlagStatus(UART_RegDef_t *pUARTx, uint32_t flag);
-void         UART_PeripheralControl(UART_RegDef_t *pUARTx, uint8_t EnorDi);
-void         UART_InterruptControl(UART_RegDef_t *pUARTx, uint32_t interruptMask, uint8_t EnorDi);
+UART_Error_e UART_WaitForFlag(USART_TypeDef *pUARTx, uint32_t flag, bool status, uint32_t timeoutMs);
+bool         UART_GetFlagStatus(USART_TypeDef *pUARTx, uint32_t flag);
+void         UART_PeripheralControl(USART_TypeDef *pUARTx, uint8_t EnorDi);
+void         UART_InterruptControl(USART_TypeDef *pUARTx, uint32_t interruptMask, uint8_t EnorDi);
 
 #endif /* INC_DRIVER_UART_H_ */

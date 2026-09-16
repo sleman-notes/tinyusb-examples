@@ -1,7 +1,8 @@
 #ifndef DRIVER_SYSTICK_H_
 #define DRIVER_SYSTICK_H_
 
-#include "stm32f411xx.h"
+#include "stm32f4xx.h"
+#include "driver_clock.h"
 #include <stdbool.h>
 
 #define TICK_HZ                 1000U
