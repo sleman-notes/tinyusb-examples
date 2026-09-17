@@ -54,3 +54,15 @@ Callbacks in TinyUSB are **not registered**. You simply implement functions with
 the prescribed names and the stack calls them automatically. Naming convention:
 "tud_" for device, "tuh_" for host. If you forget a mandatory callback, you will
 get an undefined reference as linker error.
+
+## Why the USB needs exactly 48 MHz
+
+The USB cable has no clock wire. It carries only two data wires, so the device
+has to figure out the timing by itself. The trick is to look at the line much
+faster than the data arrives, the USB hardware checks it **four times per bit**.
+That way it always finds the middle of the bit, which is where the signal is
+most stable and safest to read. Full speed USB sends 12 million bits per second,
+and four looks per bit gives 4 x 12 = 48 MHz, so from there comes the number.
+Also it's important to note that the spec of USB says that a devive should have
+only 0.25% of error.
+
