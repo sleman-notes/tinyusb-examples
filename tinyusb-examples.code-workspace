@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"name": "app",
+			"path": "app"
+		},
+		{
+			"name": "drivers",
+			"path": "drivers"
+		},
+	],
+	"settings": {
+		"C_Cpp.default.includePath": [
+			"${workspaceFolder:app}/Inc",
+			"${workspaceFolder:drivers}/Inc",
+			"${workspaceFolder:drivers}/Device/cmsis",
+		],
+		"C_Cpp.default.defines": [
+			"STM32F411xE",
+		],
+	}
+}
