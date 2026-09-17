@@ -6,7 +6,6 @@
 #include <stdbool.h>
 
 #define TICK_HZ                 1000U
-#define SYSTICK_TIM_CLK			HSI_CLOCK
 
 #define SYSTICK_CTRL_ENABLE                 (1U << 0)
 #define SYSTICK_CTRL_CLKSRC                 (1U << 2)

@@ -80,6 +80,11 @@ static void configure_cr3(USART_TypeDef *pUARTx, const UART_Config_t *pUARTConfi
     pUARTx->CR3 = cr3;
 }
 
+static uint32_t uart_get_pclk(USART_TypeDef *pUARTx)
+{
+    return (pUARTx == USART2) ? clock_get_pclk1() : clock_get_pclk2();
+}
+
 /*********************************************************************
  * Public API Implementations
  *********************************************************************/
@@ -110,7 +115,7 @@ void UART_Init(UART_Config_t *pUARTConfig)
 
     configure_cr3(pUARTConfig->pUARTx, pUARTConfig);
 
-    pUARTConfig->pUARTx->BRR = compute_baud_div(clock_get(), pUARTConfig->UART_Baud);
+    pUARTConfig->pUARTx->BRR = compute_baud_div(uart_get_pclk(pUARTConfig->pUARTx), pUARTConfig->UART_Baud);
 }
 
 void UART_DeInit(USART_TypeDef *pUARTx)
