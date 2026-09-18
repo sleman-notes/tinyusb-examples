@@ -66,3 +66,9 @@ and four looks per bit gives 4 x 12 = 48 MHz, so from there comes the number.
 Also it's important to note that the spec of USB says that a devive should have
 only 0.25% of error.
 
+
+## References
+
+- [TinyUSB a simple Tutorial](https://www.pschatzmann.ch/home/2021/02/19/tinyusb-a-simple-tutorial/)
+- [TinyUSB - Getting Started](https://docs.tinyusb.org/en/latest/getting_started.html)
+- [TinyUSB - Repository](https://github.com/hathach/tinyusb)
