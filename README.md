@@ -72,3 +72,5 @@ only 0.25% of error.
 - [TinyUSB a simple Tutorial](https://www.pschatzmann.ch/home/2021/02/19/tinyusb-a-simple-tutorial/)
 - [TinyUSB - Getting Started](https://docs.tinyusb.org/en/latest/getting_started.html)
 - [TinyUSB - Repository](https://github.com/hathach/tinyusb)
+    - /examples/device/cdc_msc/src/tusb_config.h
+    - /hw/bsp/stm32f4

@@ -1,22 +1,20 @@
 {
 	"folders": [
-		{
-			"name": "app",
-			"path": "app"
-		},
-		{
-			"name": "drivers",
-			"path": "drivers"
-		},
+		{ "name": "app", 		"path": "app" },
+		{ "name": "drivers", 	"path": "drivers" },
+		{ "name": "tinyusb", 	"path": "lib/tinyusb" },
 	],
 	"settings": {
 		"C_Cpp.default.includePath": [
 			"${workspaceFolder:app}/Inc",
 			"${workspaceFolder:drivers}/Inc",
 			"${workspaceFolder:drivers}/Device/cmsis",
+			"${workspaceFolder:tinyusb}/src",
 		],
 		"C_Cpp.default.defines": [
 			"STM32F411xE",
+			"CFG_TUSB_MCU=OPT_MCU_STM32F4"
 		],
+		"C_Cpp.default.cStandard": "gnu99"
 	}
 }
