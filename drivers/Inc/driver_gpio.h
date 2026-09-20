@@ -137,7 +137,16 @@ typedef struct
 #define GPIO_PIN_ALTFN_5            5
 #define GPIO_PIN_ALTFN_6            6
 #define GPIO_PIN_ALTFN_7            7
+#define GPIO_PIN_ALTFN_8            8
+#define GPIO_PIN_ALTFN_9            9
+#define GPIO_PIN_ALTFN_10           10
+#define GPIO_PIN_ALTFN_11           11
+#define GPIO_PIN_ALTFN_12           12
+#define GPIO_PIN_ALTFN_13           13
+#define GPIO_PIN_ALTFN_14           14
+#define GPIO_PIN_ALTFN_15           15
 
+#define GPIO_PIN_NO_ALTFN           GPIO_PIN_ALTFN_0
 #define GPIO_PIN_NO_ALTFN           GPIO_PIN_ALTFN_0
 
 
@@ -146,6 +155,9 @@ typedef struct
 #define PA5_ALTFN_TIM2_CH1			GPIO_PIN_ALTFN_1
 #define PA2_ALTFN_UART2_TX			GPIO_PIN_ALTFN_7
 #define PA3_ALTFN_UART2_RX			GPIO_PIN_ALTFN_7
+#define PA11_ALTFN_OTG_FS_DM        GPIO_PIN_ALTFN_10
+#define PA12_ALTFN_OTG_FS_DP        GPIO_PIN_ALTFN_10
+
 
 #define GPIO_OK                     0
 
