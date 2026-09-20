@@ -10,10 +10,8 @@
 #define CFG_TUSB_DEBUG        0
 
 #define CFG_TUD_ENABLED       1
-#define BOARD_TUD_MAX_SPEED   OPT_MODE_DEFAULT_SPEED
 
 #define CFG_TUD_CDC              1
 #define CFG_TUD_CDC_NOTIFY       1
-
 
 #endif /* TUSB_CONFIG_H_ */
