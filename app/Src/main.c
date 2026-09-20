@@ -1,23 +1,32 @@
 #include "config.h"
-
-
-
-
-static void serial_print(const char *msg)
-{
-	UART_Write(USART2, (const uint8_t *)msg, strlen(msg));
-}
+#include "usb.h"
+#include "tusb.h"
 
 int main(void)
 {
     config_app();
-	
-	serial_print("Hello World\r\n");
+	usb_init();
+
+	ticks_timeout_t blink;
+	ticks_timeoutInit(&blink, BLINK_PERIOD_MS);
 
 	while(1)
 	{
-		GPIO_ToggleOutputPin(LED_PORT, LED_PIN);
+		tud_task();
 
-		ticks_delay(BLINK_PERIOD_MS);
+		if(ticks_timeoutIsExpired(&blink))
+		{
+			GPIO_ToggleOutputPin(LED_PORT, LED_PIN);
+			ticks_timeoutInit(&blink, BLINK_PERIOD_MS);
+		}
+
+		if(tud_cdc_available())
+		{
+			uint8_t buf[64];
+			uint32_t count = tud_cdc_read(buf, sizeof(buf));
+
+			tud_cdc_write(buf, count);
+			tud_cdc_write_flush();
+		}
 	}
 }

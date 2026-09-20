@@ -34,6 +34,24 @@ static const GPIO_PinConfig_t pins[] =
 		.GPIO_PinPuPdControl	= GPIO_PIN_PU,
 		.GPIO_PinAltFunMode		= PA3_ALTFN_UART2_RX,
 	},
+	{
+		.pGPIOx					= GPIOA,
+		.GPIO_PinNumber			= GPIO_PIN_NO_11,
+		.GPIO_PinMode			= GPIO_MODE_ALTFN,
+		.GPIO_PinSpeed			= GPIO_SPEED_HIGH,
+		.GPIO_PinOPType			= GPIO_OP_TYPE_PP,
+		.GPIO_PinPuPdControl	= GPIO_NO_PUPD,
+		.GPIO_PinAltFunMode		= PA11_ALTFN_OTG_FS_DM,
+	},
+	{
+		.pGPIOx					= GPIOA,
+		.GPIO_PinNumber			= GPIO_PIN_NO_12,
+		.GPIO_PinMode			= GPIO_MODE_ALTFN,
+		.GPIO_PinSpeed			= GPIO_SPEED_HIGH,
+		.GPIO_PinOPType			= GPIO_OP_TYPE_PP,
+		.GPIO_PinPuPdControl	= GPIO_NO_PUPD,
+		.GPIO_PinAltFunMode		= PA12_ALTFN_OTG_FS_DP,
+	},
 };
 
 static void serial_init(void)

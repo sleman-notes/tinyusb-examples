@@ -40,6 +40,8 @@ INCLUDES+= -I $(TINYUSB_DIR)
 
 OBJS		+= $(BUILD_DIR)/$(APP).o
 OBJS		+= $(BUILD_DIR)/config.o
+OBJS		+= $(BUILD_DIR)/usb.o
+OBJS		+= $(BUILD_DIR)/usb_descriptors.o
 OBJS		+= $(BUILD_DIR)/startup.o
 OBJS		+= $(BUILD_DIR)/syscalls.o
 OBJS		+= $(BUILD_DIR)/system_stm32f4xx.o
